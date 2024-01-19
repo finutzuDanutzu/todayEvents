@@ -28,7 +28,7 @@ let resultNo = i + ".ejs"; // denumirea fiecarui rezultat la momentul salvarii t
 var n = 0; // Valoare de referinta pentru constructia fisierului inclus in FRONT-END
 
 var forDelete = []; // Lista completa si ordonata ce contine toate evnimentele aduse prin API;
-
+var x = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
 app.post("/clicked", async (req, res) => {
@@ -43,8 +43,6 @@ app.post("/clicked", async (req, res) => {
 
         const dayValue = req.body.input1Value;
         const monthValue = req.body.input2Value;
-
-
 
         console.log("click was recorded btn1");
         console.log(dayValue, monthValue);
@@ -63,13 +61,11 @@ app.post("/clicked", async (req, res) => {
             let an = result.data.events[i].year;
             let descriere = result.data.events[i].description;
             let wiki = result.data.events[i].wikipedia;
-            let textNote = "<h1>the year is: " + an + "</h1>\n <h2>These happened that year: " + descriere + "</h2>\n <h2>These are wiki links and refferences: " + wiki + "</h2><hr>\n\n\n <br><br>\n\n<script>\n a = " + i +"\n</script>";
+            let textNote1 = `\n\n<div class="card" style="width: 85vh;"><h2><svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">${an}</text></svg></h2><div class="card-body"><p class="card-text">${descriere}</p></div></div><br>`;
 
-            let textNote3 = `\n\n<div class="card" style="width: 85vh;"><h2><svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">${an}</text></svg></h2><div class="card-body"><p class="card-text">${descriere}</p></div></div><br>`;
+            console.log(textNote1);
 
-            console.log(textNote);
-
-            fs.writeFile(`views/partials/results/${resultNo}`, textNote3, {flag: 'a+'}, (err) => {
+            fs.writeFile(`views/partials/results/${resultNo}`, textNote1, {flag: 'a+'}, (err) => {
                 if(err){
                     throw err;
                 }                
@@ -77,8 +73,7 @@ app.post("/clicked", async (req, res) => {
 
             forDelete.push(resultNo);
 
-            let textNote2 = `<%- include("results/${forDelete[n]}") %>\n\n`;
-    
+            let textNote2 = `<%- include("results/${forDelete[n]}") %>\n\n`;    
 
             fs.writeFile(`views/partials/fileList.ejs`, textNote2, {flag: 'a+'}, (err) => {
                 if(err){
@@ -90,10 +85,24 @@ app.post("/clicked", async (req, res) => {
             i++;
             resultNo = i + ".ejs"
 
-            
-        };
+        }
+        
+        let textNote3 = ` <span class="fs-4" style="color: white; margin-left: 20px; margin-right: 10px;"> ${x[(monthValue-1)]} </span> `;
+        let textNote4 = ` <span class="fs-4" style="color: white;">  ${dayValue}  </span> `;
 
+        fs.writeFile(`views/partials/Luna.ejs`, textNote3, {flag: 'a+'}, (err) => {
+            if(err){
+                throw err;
+            }                
+        });
 
+        fs.writeFile(`views/partials/Ziua.ejs`, textNote4, {flag: 'a+'}, (err) => {
+            if(err){
+                throw err;
+            }                
+        });
+
+        console.log(x);
         res.render(pageName);
         
 
@@ -144,6 +153,34 @@ app.post("/clicked1", async (req, res) => {
             }
         } else {
             console.log("FileList deleted successfuly!");
+
+        }
+    }); 
+
+    fs.unlink(`views/partials/Luna.ejs`, (err) => {
+        if (err) {
+
+            if (err.code === 'ENOENT') {
+                console.log(`File does not exist!`);
+            } else {
+                throw err;
+            }
+        } else {
+            console.log("File deleted successfuly!");
+
+        }
+    });
+
+    fs.unlink(`views/partials/Ziua.ejs`, (err) => {
+        if (err) {
+
+            if (err.code === 'ENOENT') {
+                console.log(`File does not exist!`);
+            } else {
+                throw err;
+            }
+        } else {
+            console.log("File deleted successfuly!");
 
         }
     });

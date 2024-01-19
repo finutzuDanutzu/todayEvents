@@ -1,12 +1,14 @@
 
+var input1Value;
+var input2Value;
 
 const button1 = document.querySelector(".btn1").addEventListener("click", () => {
-
+    
     const input1 = document.querySelector("#floatingInput");
-    const input1Value = input1.value;
+    input1Value = input1.value;
 
     const input2 = document.querySelector("#floatingPassword");
-    const input2Value = input2.value;
+    input2Value = input2.value;
 
     fetch('/clicked', {
         method: 'POST',
