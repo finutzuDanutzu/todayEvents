@@ -35,6 +35,8 @@ app.post("/clicked", async (req, res) => {
     
     i = 0;
     n = 0;
+    pageName = "Result.ejs";
+    res.redirect("/");
     
 
     try{
@@ -42,7 +44,7 @@ app.post("/clicked", async (req, res) => {
         const dayValue = req.body.input1Value;
         const monthValue = req.body.input2Value;
 
-        pageName = "Result.ejs";
+
 
         console.log("click was recorded btn1");
         console.log(dayValue, monthValue);
@@ -63,9 +65,11 @@ app.post("/clicked", async (req, res) => {
             let wiki = result.data.events[i].wikipedia;
             let textNote = "<h1>the year is: " + an + "</h1>\n <h2>These happened that year: " + descriere + "</h2>\n <h2>These are wiki links and refferences: " + wiki + "</h2><hr>\n\n\n <br><br>\n\n<script>\n a = " + i +"\n</script>";
 
+            let textNote3 = `\n\n<div class="card" style="width: 85vh;"><h2><svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em">${an}</text></svg></h2><div class="card-body"><p class="card-text">${descriere}</p></div></div><br>`;
+
             console.log(textNote);
 
-            fs.writeFile(`views/partials/results/${resultNo}`, textNote, {flag: 'a+'}, (err) => {
+            fs.writeFile(`views/partials/results/${resultNo}`, textNote3, {flag: 'a+'}, (err) => {
                 if(err){
                     throw err;
                 }                
@@ -74,7 +78,7 @@ app.post("/clicked", async (req, res) => {
             forDelete.push(resultNo);
 
             let textNote2 = `<%- include("results/${forDelete[n]}") %>\n\n`;
-            let textNote3 = `\n\n<div class="carousel-item active" style="height: 100%;"><svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg><div class="carousel-caption d-none d-md-block"><h5>First slide label</h5><p>Some representative placeholder content for the first slide.</p></div></div>`
+    
 
             fs.writeFile(`views/partials/fileList.ejs`, textNote2, {flag: 'a+'}, (err) => {
                 if(err){
@@ -89,6 +93,7 @@ app.post("/clicked", async (req, res) => {
             
         };
 
+
         res.render(pageName);
         
 
@@ -96,7 +101,6 @@ app.post("/clicked", async (req, res) => {
         console.log(error);
         res.status(500);
     }
-
 
 
 });   //Aici se termina primul "app.post"    !!!!
@@ -147,6 +151,8 @@ app.post("/clicked1", async (req, res) => {
     i = 0;
     n = 0;
     forDelete = [];
+
+
 });
 
 
